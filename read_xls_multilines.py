@@ -24,9 +24,16 @@ def run_job():
             cell = "C{}".format(row_init_reference)
             print("Cell {}".format(cell))
             # chamar a função para pegar o valor e jogar na outra planilha
+            get_values_from_wk(cell)
             row_init_reference = row_init_reference  + 1
 
         row_init_reference = row_init_reference + rows_to_next_month
+
+def get_values_from_wk(cell):
+    aba_active_to_take = wk_to_take_values.active
+    print(f"Lendo a tabela Para Pegar Dados na aba {aba_active_to_take.title}")
+    value_took = aba_active_to_take[cell].value
+    print(f"Pegando o valor a ser transferido = {value_took}")
 
 def init():
     load_work_books()
