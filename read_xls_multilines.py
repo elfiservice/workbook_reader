@@ -21,22 +21,36 @@ def run_job():
             cell_row = row + 1
             print("Mes {} linha {}".format(month, cell_row))
 
-            cell = "C{}".format(row_init_reference)
-            print("Cell {}".format(cell))
+            cell_to_get = "S{}".format(row_init_reference)
+            cell_to_set = "C{}".format(row_init_reference)
+            print("Get from Cell {} to set in Cell {}".format(cell_to_get, cell_to_set))
             # chamar a função para pegar o valor e jogar na outra planilha
-            get_values_from_wk(cell)
+            value_to_send = get_value_from_wk(cell_to_get)
+            set_value_to_receive_wk(cell_to_set, value_to_send)
             row_init_reference = row_init_reference  + 1
 
         row_init_reference = row_init_reference + rows_to_next_month
 
-def get_values_from_wk(cell):
+def get_value_from_wk(cell):
     aba_active_to_take = wk_to_take_values.active
     print(f"Lendo a tabela Para Pegar Dados na aba {aba_active_to_take.title}")
     value_took = aba_active_to_take[cell].value
     print(f"Pegando o valor a ser transferido = {value_took}")
+    return value_took
+
+def set_value_to_receive_wk(cell, value):
+    if (value != None):
+        aba_active_to_receive = wk_to_receive_values.active
+        print(f"Abrindo a tabela Consolidado na aba {aba_active_to_receive.title} para receber o valor")
+        print(f"Salvando o valor na nova tabela = {value}")
+        aba_active_to_receive[cell] = value
+
+def save_to_new_wk():
+    wk_to_receive_values.save("planilha-rentabilidade-2022-Consolidado-Editavel-copy.xlsx")
 
 def init():
     load_work_books()
     run_job()
+    save_to_new_wk()
 
 init()
